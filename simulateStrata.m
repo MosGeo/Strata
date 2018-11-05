@@ -7,9 +7,9 @@ function [depth, age, strata] = simulateStrata(markovTM, age, seaLevel, depositi
 %% Testing
 
 age = 0:200;
-seaLevel = sin(age/5);
-markovTM{1} = [.8 .1 .1; .3 .6 .1; .2 .2 .6];
-markovTM{2} = [.2 .2 .6;  .3 .6 .1;.8 .1 .1];
+seaLevel = sin(age/10);
+markovTM{1} = [.8 .1 .1; .4 .5 .1; .4 .4 .2];
+markovTM{2} = [.1 .4 .5; .1 .5 .4; 0 .2 .8];
 
 
 
