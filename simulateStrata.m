@@ -20,9 +20,10 @@ if ~iscell(markovMatrices); markovMatrices = {markovMatrices}; end
 % Parameters
 nLithologies = size(markovMatrices{1},1);
 nTimeIntervals = numel(age)-1;
-nMarkovTM   = numel(markovMatrices);
+nMatrices   = numel(markovMatrices);
 
 % Defaults
+if ~exist('matricesPosition', 'var'); matricesPosition = (0:(nMatrices-1))/(nMatrices-1); end
 if ~exist('depositionalRates', 'var'); depositionalRates = ones(nLithologies,1); end
 if ~exist('seaLevel', 'var'); seaLevel = ones(numel(age),1); end
 
@@ -59,7 +60,7 @@ for i = 1:nTimeIntervals
     
     newPosition = (currentSeaLevel(i) - min(seaLevel))/( max(seaLevel)- min(seaLevel));
     
-    P = interpMarkovMatrix(markovMatrices, newPosition, markovTBPosition);
+    P = interpMarkovMatrix(markovMatrices, newPosition, matricesPosition);
     
     [sample, v] = sampleMarkovChain(v, P);
     strata(i) = sample;
