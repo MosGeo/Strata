@@ -1,4 +1,4 @@
-function [strata] = simulateStrata(markovMatrices, age, seaLevel, depositionalRates, markovTBPosition)
+function [strata] = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates, matricesPosition)
 %% simulateStrata   Simulate interval using Markov chains with sequence stratigraphic framework
 %
 % Mustafa Al Ibrahim @ 2018
@@ -6,75 +6,62 @@ function [strata] = simulateStrata(markovMatrices, age, seaLevel, depositionalRa
 
 %% Preprocessing
 
-% Preprocessing
-if isscalar(age); age = 1:age; end
-if ~iscell(markovMatrices); markovMatrices = {markovMatrices}; end
+% Assertions
+assert(exist('age', 'var')==true && iscolumn(age) && isnumeric(age), 'age is not valid');
+assert(exist('markovMatrices', 'var')==true,'markovMatrices must be provided');
 
-% Parameters
+% Preprocessing
+if isscalar(age); age = (1:age)'; end
+if ~iscell(markovMatrices); markovMatrices = {markovMatrices}; end
 nLithologies = size(markovMatrices{1},1);
 nTimeIntervals = numel(age)-1;
 nMatrices   = numel(markovMatrices);
 
 % Defaults
-if ~exist('matricesPosition', 'var'); matricesPosition = (0:(nMatrices-1))/(nMatrices-1); end
+if ~exist('seaLevelAge', 'var'); seaLevelAge = age; end
+if ~exist('seaLevelHeight', 'var'); seaLevelHeight = ones(numel(age),1); end
 if ~exist('depositionalRates', 'var'); depositionalRates = ones(nLithologies,1); end
-if ~exist('seaLevel', 'var'); seaLevel = ones(numel(age),1); end
+if ~exist('matricesPosition', 'var'); matricesPosition = (0:(nMatrices-1))/(nMatrices-1); end
+
+% Assertions
+assert(iscolumn(seaLevelHeight) && iscolumn(seaLevelAge), 'Sea level age and height must be columns')
 
 %% Main
 
-% Sort by descending age
-[age,I] = sort(age,'descend');
-seaLevel = seaLevel(I);
+% Sea level
+[age] = sort(age,'descend');
+seaLevel = interp1(seaLevelAge, seaLevelHeight, age);
 
 % Initialize the lithology
 initialLithology = round(rand()*(nLithologies-1) + 1);
-v = zeros(1,nLithologies);
-v(initialLithology) = 1;
+binaryLithology = zeros(1,nLithologies);
+binaryLithology(initialLithology) = 1;
 
+% Calculate time
 intervalTime = -diff(age);
+startDepositionTime = age(1:end-1);
+endDepositionTime   = age(2:end);
 
-% Initialize the output
-startDepositionTime = zeros(nTimeIntervals,1);
-endDepositionTime   = zeros(nTimeIntervals,1);
-lithology           = zeros(nTimeIntervals,1);
-thickness           = zeros(nTimeIntervals,1);
-currentSeaLevel     = zeros(nTimeIntervals,1);
-top  = zeros(nTimeIntervals,1);
+% Calculate sea level
+midDepositionTime   = (startDepositionTime +  endDepositionTime)/2;
+midSeaLevel         = interp1(age, seaLevel,midDepositionTime);
+normalizedSeaLevel  = (midSeaLevel - min(seaLevel))/( max(seaLevel)- min(seaLevel));
 
-totalThickness      = 0;
-
+% Simulate deposition
+lithology = zeros(nTimeIntervals,1);
 for i = 1:nTimeIntervals
-    currentIntervalTime = intervalTime(i);
-    startDepositionTime(i) = age(i);
-    endDepositionTime(i)   = age(i+1);
-    
-    midDepositionTime = (startDepositionTime(i) +  endDepositionTime(i) )/2;
-    currentSeaLevel(i) = interp1(age, seaLevel,midDepositionTime);
-    
-    newPosition = (currentSeaLevel(i) - min(seaLevel))/( max(seaLevel)- min(seaLevel));
-    
-    P = interpMarkovMatrix(markovMatrices, newPosition, matricesPosition);
-    
-    [sample, v] = sampleMarkovChain(v, P);
-    lithology(i) = sample;
-    
-    currentDepositionalRate = depositionalRates(sample);
-    
-    thickness(i) = currentDepositionalRate*currentIntervalTime;
-    totalThickness = totalThickness + thickness(i);
-    top(i) = totalThickness;
+    currentTransitionMatrix = interpMarkovMatrix(markovMatrices, normalizedSeaLevel(i), matricesPosition);
+    [lithology(i), binaryLithology] = sampleMarkovChain(binaryLithology, currentTransitionMatrix);        
 end
-    
-strata.startDepositionTime = startDepositionTime;
-strata.endDepositionTime = endDepositionTime;
-strata.startDepositionTime = startDepositionTime;
-strata.endDepositionTime = endDepositionTime;
-strata.seaLevel  = currentSeaLevel;
-strata.lithology = lithology;
-strata.thickness = thickness;
-strata.topDepth  = max(top)-top;
-strata.baseDepth = max(base)-base;
 
+% Calculate thicknesses and depth
+thickness  = depositionalRates(lithology) .* intervalTime;
+totalThickness = cumsum(thickness);
+topDepth = max(totalThickness)-totalThickness;
+baseDepth = [max(totalThickness); topDepth(1:end-1)]; 
+
+% Organize output
+strata = table(startDepositionTime, endDepositionTime, baseDepth, topDepth, thickness, lithology, midSeaLevel);
 
 end
 
