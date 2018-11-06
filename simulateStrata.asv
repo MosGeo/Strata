@@ -1,4 +1,4 @@
-function [strata] = simulateStrata(markovMatrices, age, seaLevel, depositionalRates, markovTBPosition)
+function [depth, age, strata] = simulateStrata(markovMatrices, age, seaLevel, depositionalRates, markovTBPosition)
 %% simulateStrata   Simulate interval using Markov chains with sequence stratigraphic framework
 %
 % Mustafa Al Ibrahim @ 2018
@@ -63,7 +63,11 @@ for i = 1:nTimeIntervals
     thickness(i) = currentDepositionalRate*currentIntervalTime;
     totalThickness = totalThickness + thickness(i);
     top(i) = totalThickness;
+
 end
+    bottom = [0; top(1:end-1)];
+    depth = top;
+
     
 strata.startDepositionTime = startDepositionTime;
 strata.endDepositionTime = endDepositionTime;
@@ -71,10 +75,7 @@ strata.startDepositionTime = startDepositionTime;
 strata.endDepositionTime = endDepositionTime;
 strata.seaLevel  = currentSeaLevel;
 strata.lithology = lithology;
-strata.thickness = thickness;
-strata.topDepth  = max(top)-top;
-strata.baseDepth = max(base)-base;
-
+strata.
 
 end
 
