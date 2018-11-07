@@ -11,6 +11,7 @@ function interploatedMarkovMatrix = interpMarkovMatrix(markovMatrices, newPositi
 % Parameters
 if iscell(markovMatrices); markovMatrices = cell2mat(permute(markovMatrices,[1 3 2])); end
 nMatrices = numel(markovMatrices);
+nStates   = size(markovMatrices(:,:,1),1);
 
 % Defaults
 if ~exist('matricesPosition', 'var'); matricesPosition = (0:(nMatrices-1))/(nMatrices-1); end
@@ -25,6 +26,6 @@ markovMatrices = permute(markovMatrices,[3 1 2]);
 
 % Interpolate and recover shape
 interploatedMarkovMatrix = interp1(matricesPosition, markovMatrices, newPosition);
-interploatedMarkovMatrix = reshape(interploatedMarkovMatrix, 3,3,1);
+interploatedMarkovMatrix = reshape(interploatedMarkovMatrix, nStates,nStates,1);
 
 end

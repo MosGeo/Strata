@@ -1,25 +1,38 @@
 %% Testing
-clear all
+clear 
+clc
 
 % Parameters
-age = (0:100)';
-seaLevelAge = age;
-seaLevelHeight = sin(seaLevelAge/10);
-markovMatrices{1} = [.1 .4 .5; .1 .5 .4; 0 .2 .8];
-markovMatrices{2} = [.8 .1 .1; .4 .5 .1; .4 .4 .2];
-depositionalRates = [.5, .8, 1]';
+maxAge= 100;
+age = (0:maxAge)';
+seaLevelAge = 0:.01:maxAge;
+seaLevelHeight = sin(seaLevelAge/18);
+markovMatrices{1} = [.1 .4 .5 0; .1 .495 .4 .005; 0 .15 .7 .15; 0 .1, .4, .5]; % Shallow
+markovMatrices{2} = [.8 .1 .1 0; .4 .5 .1 0; .4 .4 .2 0; 0 0 .7 .3];  % Deep
+depositionalRates = [1, 1, .5, 0];
+nRealizations=6;
 
+figure('Color', 'White')
+
+for i = 1:nRealizations
+    
 % Simulate
 strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
+strataOrig = strata;
+strata = mergeStrata(strata, true);
 
 % Plotting 
-[intervalData] = thickness2interval(strata.lithology, true, strata.thickness);
-figure('Color', 'White')
-subplot(1,2,1)
+subplot(3,nRealizations,[i, i+nRealizations])
+plotStrata(strata, true);
+title(['Realization ', num2str(i)])
+    
+hold on
+end
 
-plot(strata.midSeaLevel, strata.topDepth);
-set(gca, 'yDir', 'reverse')
-xlabel('Relative sea-level'); ylabel('Depth')
+subplot(3,nRealizations,2*nRealizations+1:3*nRealizations)
+%[topDepth, baseDepth, totalThickness] = analyzeStrataThickness(strataOrig);
+%plot(strataOrig.midSeaLevel, baseDepth-(baseDepth-topDepth)/2, 'LineWidth', 2);
+plot(seaLevelAge,seaLevelHeight, 'LineWidth',2)
+set(gca, 'xDir', 'reverse')
+ylabel('Normalized relative sea-level'); xlabel('Age')
 axis tight
-subplot(1,2,2)
-plotIntervalTable(intervalData);

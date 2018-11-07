@@ -1,13 +1,14 @@
 function [intervalData] = thickness2interval(value, isMerge, thickness)
-%%
+%% Preprocessing 
 
-% Default values
-if ~(exist('thickness', 'var')); thickness = ones(size(value)); end;
-if ~(exist('isMerge', 'var')); isMerge = true; end;
+% Defaults
+if ~(exist('thickness', 'var')); thickness = ones(size(value)); end
+if ~(exist('isMerge', 'var')); isMerge = true; end
 
-% Make sure that input are columns
-value = value(:);
-thickness = thickness(:);
+% Assertions
+assert(iscolumn(value) && iscolumn(thickness), 'value and thickness must be column vectors');
+
+%% Main
 
 % Identify tops
 if isMerge == true
@@ -24,6 +25,6 @@ nIntervals = sum(topsIndex);
 intervalData = zeros(nIntervals,3);
 intervalData(:,3) = value(topsIndex);
 intervalData(:,2) = topsLocation(topsIndex);
-intervalData(2:end,1) = intervalData(1:end-1,2) ;
+intervalData(2:end,1) = intervalData(1:end-1,2);
 
 end
