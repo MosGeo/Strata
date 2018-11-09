@@ -1,77 +1,38 @@
-function strataMerged = mergeStrata(strata, isApplyErosion, isRemoveErosionLayers)
+function strata = mergeStrata(strata)
 %% MERGESTRATA  Merges consecutive strata into one interval
-%
 %
 % Mustafa Al Ibrahim @ 2018
 % Mustafa.Geoscientist@outlook.com
 
 %% Preprocessing
 
-% Defaults
-if ~exist('isMerge', 'var'); isMerge = true; end
-if ~exist('isApplyErosion', 'var'); isApplyErosion = true; end
-if ~exist('isRemoveErosionLayers', 'var'); isRemoveErosionLayers = false; end
+% Assertions
+assert(exist('strata', 'var')== true, 'strata must be provided');
 
 %% Main
+
+% Parameters
 lithology     = strata.lithology;
-thickness = strata.thickness;
-startTime = strata.startTime;
-endTime   = strata.endTime;
-midSeaLevel  = strata.midSeaLevel;
+thickness     = strata.thickness;
+startTime     = strata.startTime;
+endTime       = strata.endTime;
+midSeaLevel   = strata.midSeaLevel;
 
-%% Merging
+% Merge deposits
+startInd  = find(diff([nan; lithology]) ~= 0); 
+endInd    = find(diff([lithology; nan]) ~= 0);
 
+lithologyMerged     = lithology(startInd);
+funSum  = @(sInd, eInd) sum(thickness(sInd:eInd));
+thicknessMerged = arrayfun(funSum,  startInd, endInd);
 
-if isMerge == true
-    % Fine indecis
-    startInd  = find(diff([nan; lithology]) ~= 0); 
-    endInd    = find(diff([lithology; nan]) ~= 0);
-    
-    nIntervals = sum(startInd);
+startTimeMerged = startTime(startInd);
+endTimeMerged   = endTime(endInd);
 
+funMean      = @(sInd, eInd) sum(midSeaLevel(sInd:eInd).*thickness(sInd:eInd)/sum(thickness(sInd:eInd))) ;
+midSeaLevelMerged  = arrayfun(funMean,  startInd, endInd);
 
-    lithologyMerged     = lithology(startInd);
-
-    funSum  = @(sInd, eInd) sum(thickness(sInd:eInd));
-    thicknessMerged = arrayfun(funSum,  startInd, endInd);
-
-    startTimeMerged = startTime(startInd);
-    endTimeMerged   = endTime(endInd);
-
-    funMean      = @(sInd, eInd) sum(midSeaLevel(sInd:eInd).*thickness(sInd:eInd)/sum(thickness(sInd:eInd))) ;
-    midSeaLevelMerged  = arrayfun(funMean,  startInd, endInd);
+strata = table(startTimeMerged, endTimeMerged, thicknessMerged, lithologyMerged, midSeaLevelMerged);
+strata.Properties.VariableNames = {'startTime', 'endTime', 'thickness', 'lithology', 'midSeaLevel'};
 
 end
-
-%% Erosion (assume the oldest layer is at the top)
-
-if isApplyErosion == true
-    erosionLayers = find([0; thicknessMerged(2:end)]<0);
-    while(any(erosionLayers))
-
-        erosionInd = erosionLayers;
-        erodedInd  = erosionInd-1;
-        erosionAmmount = thicknessMerged(erosionInd);
-
-        thicknessMerged(erodedInd) =  thicknessMerged(erodedInd)+ erosionAmmount;
-        thicknessMerged(erosionInd) = thicknessMerged(erosionInd) - erosionAmmount;
-
-        erosionLayers = find([0; thicknessMerged(2:end)]<0);
-    end
-end
-
-%% Build new strata table
-
-strataMerged = table(startTimeMerged, endTimeMerged, thicknessMerged, lithologyMerged, midSeaLevelMerged);
-strataMerged.Properties.VariableNames = {'startTime', 'endTime', 'thickness', 'lithology', 'midSeaLevel'};
-
-if (isRemoveErosionLayers==true)
-    erodedlayersInd = strataMerged.thicknessMerged <=0;
-    strataMerged(erodedlayersInd,:)=[];
-end
-
-
-
-
-
-
