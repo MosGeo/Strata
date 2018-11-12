@@ -10,7 +10,7 @@ seaLevelHeight = sin(seaLevelAge/18);
 markovMatrices{1} = [.1 .4 .5 0; .1 .495 .4 .005; 0 .15 .7 .15; 0 .1, .4, .5]; % Shallow
 markovMatrices{2} = [.8 .1 .1 0; .4 .5 .1 0; .4 .4 .2 0; 0 0 .7 .3];  % Deep
 depositionalRates = [1, 1, .5, 0];
-nRealizations=6;
+nRealizations=4;
 
 figure('Color', 'White')
 
