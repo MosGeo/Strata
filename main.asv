@@ -41,13 +41,14 @@ axis tight
 
 
 % Parameters
-maxAge= 100;
+maxAge= 300;
 age = (0:maxAge)';
 seaLevelAge = 0:.01:maxAge;
-seaLevelHeight = sin(seaLevelAge/20);
-markovMatrices{1} = [.1 .4 .5; .1 .5 .4; 0 .3 .7]; % Shallow
-markovMatrices{2} = [.8 .1 .1; .4 .5 .1; .4 .4 .2];  % Deep
-depositionalRates = [1, 1, 1];
+seaLevelHeight = sin(seaLevelAge/10);
+markovMatrices{1} = [.1 .4 .5 0; .1 .495 .4 .005; 0 .1 .7 .2; 0 .1, .4, .5]; % Shallow
+markovMatrices{2} = [.8 .1 .1 0; .4 .5 .1 0; .4 .4 .2 0; 0 0 .7 .3];  % Deep
+depositionalRates = [1, .7, .5, -.1];
+depositionalRates = [1, 1, 1, 1];
 
 % Simulate
 strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
@@ -64,7 +65,7 @@ for i = 1:nScales
     strataUpscaled = finalizeStrata(strataUpscaled);
 
     subplot(1,nScales+1,i+1)
-    plotStrata(strataUpscaled, true, 3);
+    plotStrata(strataUpscaled, true, 4);
     title(['Scaled ', num2str(smoothingInterval)])
 
 end

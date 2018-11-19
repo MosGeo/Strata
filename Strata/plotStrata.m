@@ -21,7 +21,6 @@ if ~exist('nClasses', 'var'); nClasses = numel(unique(strata.lithology)); end
 
 
 %% Main
-
 colors = gray(nClasses);
 [topDepth, baseDepth] = analyzeStrataThickness(strata, ~isPlotErosion);
 
