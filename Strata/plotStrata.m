@@ -64,7 +64,9 @@ end
 
 
 % Finalize plot
-axis tight; axis equal; set(gca,'XTickLabel', []);
+axis tight; 
+%axis equal; 
+set(gca,'XTickLabel', []);
 set(gca,'yDir', 'reverse')
 ylabel('Depth');
 xlabel('Lithology');
