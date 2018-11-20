@@ -18,14 +18,17 @@ assert(isa(isRemoveErosionLayers, 'logical') && isscalar(isRemoveErosionLayers),
 
 %% Main
 
+% Perform erosion
 if isErode == true   
     strata = erodeStrata(strata);
 end
 
+% Remove erosion layers
 if isRemoveErosionLayers==true
     strata = removeErodedStrata(strata);
 end
 
+% Merge erosional layers
 if isMerge == true
    strata = mergeStrata(strata);
 end

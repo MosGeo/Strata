@@ -35,6 +35,7 @@ endTimeMerged   = endTime(endInd);
 funMean      = @(sInd, eInd) sum(midSeaLevel(sInd:eInd).*thickness(sInd:eInd)/sum(thickness(sInd:eInd))) ;
 midSeaLevelMerged  = arrayfun(funMean,  startInd, endInd);
 
+% Build the new table
 strata = table(startTimeMerged, endTimeMerged, thicknessMerged, lithologyMerged, midSeaLevelMerged);
 strata.Properties.VariableNames = {'startTime', 'endTime', 'thickness', 'lithology', 'midSeaLevel'};
 

@@ -62,7 +62,7 @@ for i = 1:nScales
     strata = upscaleStrata(strata, smoothingInterval, 'mode');
 
     subplot(1,nScales+1,i+1)
-    plotStrata(finalizeStrata(strata), true, size(markovMatrices{1}, 1));
+    plotStrata(strata, true, true, size(markovMatrices{1},1));
     title(['Scale: ', num2str(smoothingInterval)])
 
 end
@@ -73,7 +73,7 @@ set(gca, 'yDir', 'reverse')
 xlabel('Normalized relative sea-level'); ylabel('Depth')
 axis tight
 
-%% Upscaling example (Mode)
+%% Upscaling example (Mean)
 
 % Parameters
 maxAge= 200;
@@ -86,7 +86,7 @@ depositionalRates = [1, 1, 1];
 
 % Simulate
 strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
-smoothingIntervals = [1 3 5 7 9 11 13 15 31];
+smoothingIntervals = [1 3 5 7 9 11 13 17 25];
 
 nScales = numel(smoothingIntervals);
 
@@ -98,7 +98,7 @@ for i = 1:nScales
     strataUpscaled = upscaleStrata(strata, smoothingInterval, 'mean');
 
     subplot(1,nScales+1,i+1)
-    plotStrata(finalizeStrata(strataUpscaled), true, size(markovMatrices{1}, 1));
+    plotStrata(strataUpscaled, true, true, size(markovMatrices{1},1));
     title(['Scale: ', num2str(smoothingInterval)])
 
 end

@@ -19,7 +19,6 @@ assert(ischar(type) && ismember(lower(type), {'mode', 'mean'}), 'type must be mo
 %% Main
 
 switch(lower(type))
-    
     case 'mode'
          strata = upscaleStrataMode(strata, smoothingInterval);     
     case 'mean'

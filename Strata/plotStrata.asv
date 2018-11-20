@@ -1,4 +1,4 @@
-function axisHandle = plotStrata(strata, isPlotErosion, nClasses)
+function axisHandle = plotStrata(strata, isPlotErosion, isFinalizeStrata, nClasses)
 %% PLOTSTRATA  Plot a stratigraphic section
 %
 % strata:           Strataigraphic table (includes lithology, thickness)
@@ -11,16 +11,26 @@ function axisHandle = plotStrata(strata, isPlotErosion, nClasses)
 
 % Defaults
 if ~exist('isPlotErosion', 'var'); isPlotErosion = true; end
+if ~exist('isFinalizeStrata', 'var'); isFinalizeStrata = true; end
 
 % Assertions
 assert(exist('strata', 'var')==true, 'strata must be provided');
 assert(isa(isPlotErosion, 'logical') && isscalar(isPlotErosion), 'isPlotErosion must be logical scalar');
 
+% Parameters
+isLithologyComp = ~isvector(strata.lithology);
+
 % Defaults 2
-if ~exist('nClasses', 'var'); nClasses = numel(unique(strata.lithology)); end 
+if ~exist('nClasses', 'var') && ~isLithologyComp; nClasses = numel(unique(strata.lithology)); end 
+if ~exist('nClasses', 'var') && isLithologyComp; nClasses = numel(strata.lithology(1,:)); end 
 
 
 %% Main
+
+if isFinalizeStrata
+    strata = finalizeStrata
+
+
 colors = gray(nClasses);
 [topDepth, baseDepth] = analyzeStrataThickness(strata, ~isPlotErosion);
 
@@ -28,7 +38,6 @@ colors = gray(nClasses);
 nDeposits   = sum(strata.thickness>0);
 indDeposits = find(strata.thickness>0);
 
-isLithologyComp = ~isvector(strata.lithology);
 
 for iDeposit = 1:nDeposits
        i = indDeposits(iDeposit);
@@ -41,12 +50,13 @@ for iDeposit = 1:nDeposits
            rectangle('Position',[0 startYPosition endXPosition thickness], 'FaceColor', colors(value,:));
        else
            values = strata.lithology(i,:);
-           nClasses = numel(values);
            maxPosition = baseDepth(1)/5*(nClasses)^.5;
-           endXPositions = cumsum(values)*maxPosition;
-           startXPositions = [0, endXPosition(1:end-1)];
+           width = values*maxPosition;
+           startXPositions = [0, cumsum(width)];
            for i = 1:nClasses
-               rectangle('Position',[startXPositions( startYPosition endXPositions(i) thickness], 'FaceColor', colors(i,:));
+               if width(i) > 0 
+                    rectangle('Position',[startXPositions(i) startYPosition width(i) thickness], 'FaceColor', colors(i,:));
+               end
            end
            
        end

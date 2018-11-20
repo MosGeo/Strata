@@ -1,4 +1,4 @@
-function axisHandle = plotStrata(strata, isPlotErosion, nClasses)
+function axisHandle = plotStrata(strata, isPlotErosion, isFinalizeStrata, nClasses)
 %% PLOTSTRATA  Plot a stratigraphic section
 %
 % strata:           Strataigraphic table (includes lithology, thickness)
@@ -11,6 +11,7 @@ function axisHandle = plotStrata(strata, isPlotErosion, nClasses)
 
 % Defaults
 if ~exist('isPlotErosion', 'var'); isPlotErosion = true; end
+if ~exist('isFinalizeStrata', 'var'); isFinalizeStrata = true; end
 
 % Assertions
 assert(exist('strata', 'var')==true, 'strata must be provided');
@@ -25,13 +26,19 @@ if ~exist('nClasses', 'var') && isLithologyComp; nClasses = numel(strata.litholo
 
 
 %% Main
+
+% Finalize strata if requested
+if isFinalizeStrata
+    strata = finalizeStrata(strata);
+end
+
+% Initial needed parameters
 colors = gray(nClasses);
 [topDepth, baseDepth] = analyzeStrataThickness(strata, ~isPlotErosion);
 
 % Plot deposits
 nDeposits   = sum(strata.thickness>0);
 indDeposits = find(strata.thickness>0);
-
 
 for iDeposit = 1:nDeposits
        i = indDeposits(iDeposit);
@@ -48,7 +55,9 @@ for iDeposit = 1:nDeposits
            width = values*maxPosition;
            startXPositions = [0, cumsum(width)];
            for i = 1:nClasses
-               rectangle('Position',[startXPositions(i) startYPosition width(i) thickness], 'FaceColor', colors(i,:));
+               if width(i) > 0 
+                    rectangle('Position',[startXPositions(i) startYPosition width(i) thickness], 'FaceColor', colors(i,:));
+               end
            end
            
        end
