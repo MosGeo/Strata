@@ -53,6 +53,7 @@ midDepositionTime   = (startTime +  endTime)/2;
 midSeaLevel         = interp1(age, seaLevel,midDepositionTime);
 normalizedSeaLevel  = (midSeaLevel - min(seaLevel))/( max(seaLevel)- min(seaLevel));
 
+
 % Simulate deposition
 lithology = zeros(nTimeIntervals,1);
 for i = 1:nTimeIntervals
