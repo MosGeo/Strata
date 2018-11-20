@@ -11,6 +11,9 @@ assert(exist('strata', 'var')== true, 'strata must be provided');
 
 %% Main
 
+% Make sure lithology is a vector
+if (~isvector(strata.lithology)); return; end
+
 % Parameters
 lithology     = strata.lithology;
 thickness     = strata.thickness;

@@ -3,7 +3,7 @@ clear
 clc
 
 % Parameters
-maxAge= 200;
+maxAge= 100;
 age = (0:maxAge)';
 seaLevelAge = 0:.01:maxAge;
 seaLevelHeight = sin(seaLevelAge/18)*0+1;
@@ -11,33 +11,28 @@ markovMatrices{1} = [.1 .4 .5 0; .1 .495 .4 .005; 0 .15 .7 .15; 0 .1, .4, .5]; %
 %markovMatrices{2} = [.8 .1 .1 0; .4 .5 .1 0; .4 .4 .2 0; 0 0 .7 .3];  % Deep
  
 depositionalRates = [1, .7, .5, -.1];
-%depositionalRates = [1, 1, 1, 1];
+depositionalRates = [1, 1, 1, 1];
 
 %% Multiple realizations
 
-nRealizations=4;
-
+nRealizations=5;
 figure('Color', 'White')
 
 for i = 1:nRealizations
     
 % Simulate
 strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
-strataOrig = strata;
-strata = mergeStrata(strata);
+strata = upscaleStrataMean(strata, 11)
 
 % Plotting 
-
 subplot(3,nRealizations,[i, i+nRealizations])
-plotStrata(strata, true, size(markovMatrices{1}, 1));
+plotStrata(finalizeStrata(strata), true, size(markovMatrices{1}, 1));
 title(['Realization ', num2str(i)])
     
 hold on
 end
 
 subplot(3,nRealizations,2*nRealizations+1:3*nRealizations)
-%[topDepth, baseDepth, totalThickness] = analyzeStrataThickness(strataOrig);
-%plot(strataOrig.midSeaLevel, baseDepth-(baseDepth-topDepth)/2, 'LineWidth', 2);
 plot(seaLevelAge,seaLevelHeight, 'LineWidth',2)
 set(gca, 'xDir', 'reverse')
 ylabel('Normalized relative sea-level'); xlabel('Age')
