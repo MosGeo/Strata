@@ -25,7 +25,7 @@ B = padarray(classification,padSize,'replicate');
 meanMatrix = zeros(numel(classification), nClasses);
 for j = 1+padSize:padSize+numel(classification)
     currentClasses = B(j-padSize: j+padSize);
-    meanMatrix(j-padSize,:) = histcounts(currentClasses, nClasses)/smoothingInterval;
+    meanMatrix(j-padSize,:) = histcounts(currentClasses, 1-.5:1:nClasses+.5)/smoothingInterval;
 end
 
 strata.lithology = meanMatrix;
