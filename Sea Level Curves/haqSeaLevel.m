@@ -1,13 +1,23 @@
 function [age, height] =  haqSeaLevel(minAge, maxAge, dt, isPlot)
+%% HAQSEALEVEL  Haq see level curve
+%
+%
+% Mustafa Al Ibrahim @ 2018
+% Mustafa.Geoscientist@outlook.com
 
 %% Preprocessing
 
 % Defaults
 if ~exist('minAge', 'var'); minAge = -inf; end
 if ~exist('maxAge', 'var'); maxAge = inf; end
-if ~exist('maxAge', 'var'); dt = nan; end
+if ~exist('dt', 'var'); dt = nan; end
 if ~exist('isPlot', 'var'); isPlot = false; end
 
+% Assertions
+assert(isscalar(minAge) && isnumeric(minAge), 'minAge must be scalar numeric');
+assert(isscalar(minAge) && isnumeric(minAge), 'minAge must be scalar numeric');
+assert(isscalar(dt) && isnumeric(dt), 'dt must be scalar numeric');
+assert(isscalar(isPlot) && isa(isPlot, 'logical'), 'isPlot must be scalar logical');
 
 %% Main
 
@@ -33,7 +43,6 @@ if exist('dt', 'var') && ~isnan(dt)
     age = ageResampled;
     height = heightResampled;
 end
-
 
 % Plotting
 if isPlot
