@@ -38,7 +38,7 @@ set(gca, 'xDir', 'reverse')
 ylabel('Normalized relative sea-level'); xlabel('Age')
 axis tight
 
-%% Upscaling example (Mean)
+%% Upscaling example (Mode)
 
 % Parameters
 maxAge= 200;
