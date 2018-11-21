@@ -80,7 +80,10 @@ if isPlotErosion == true
               elseif i==1
                   value = nClasses;
               end
+              
+              if isLithologyComp; value = nClasses; end
               endXPosition = baseDepth(1)/5*(value)^.5;
+                  
 
               x =  0:.01:endXPosition;
               y =  startYPosition + sin(x*10)*baseDepth(end)/10;
