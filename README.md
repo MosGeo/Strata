@@ -8,7 +8,13 @@ Cyclostratigraphy in the rock is prevelant. We often rely on it to make predicti
 - Create a training dataset for machine learning.
 
 ## How to use
-See the example Matlab script folder for possible usage.
+See the example Matlab script folder for possible usage. Basically
+- Define the transition matrices and depositional rates at different sea levels.
+- Define sea level curve.
+- Run.
+
+## Other features
+Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See examples for how to use.
 
 ## Referencing
 For now, you can reference this Github repository if you use the code.
