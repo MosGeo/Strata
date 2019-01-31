@@ -6,13 +6,11 @@ Cyclostratigraphy in the rock is prevelant. We often rely on it to make predicti
     <img width=800 src="https://github.com/MosGeo/Strata/blob/master/ReadmeFiles/Realizations.png" alt="Realizations" title="Multiple realizations"</img>
 </div>
 
-## Possible usage
+## How to use
+See the example Matlab script folder for possible usage. Basically 1) define the transition matrices and depositional rates at different sea levels, 2) fefine sea level curve, 3) Run. Possible usage into projects include:
 - Study the effect of changing cyclostratigraphic pattern on different outputs such as the seismic signal.
 - Study the effect of upscaling on different outputs.
 - Create a training dataset for machine learning.
-
-## How to use
-See the example Matlab script folder for possible usage. Basically 1) define the transition matrices and depositional rates at different sea levels, 2) fefine sea level curve, 3) Run.
 
 ## Other features
 Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See examples for how to use.
