@@ -1,45 +1,49 @@
-%% Testing
+%% Multiple realization example
 clear 
 clc
 
-% Parameters
-maxAge= 100;
-age = (0:maxAge)';
+% Define sea level curve
+rng(84282)
+maxAge= 200;
+age = (0:2:maxAge)';
 seaLevelAge = 0:.01:maxAge;
-seaLevelHeight = sin(seaLevelAge/18)*0+1;
-markovMatrices{1} = [.1 .4 .5 0; .1 .495 .4 .005; 0 .15 .7 .15; 0 .1, .4, .5]; % Shallow
-%markovMatrices{2} = [.8 .1 .1 0; .4 .5 .1 0; .4 .4 .2 0; 0 0 .7 .3];  % Deep
- 
-depositionalRates = [1, .7, .5, -.1];
-depositionalRates = [1, 1, 1, 1];
+seaLevelHeight = sin(seaLevelAge/20) ;%+  .25*sin(seaLevelAge/5);
 
-%% Multiple realizations
+% Define transitional matrices
+% markovMatrices{1} = [.1 .4 .5; .1 .5 .4; 0 .3 .7];   % Shallow
+% markovMatrices{2} = [.7 .2 .1; .4 .5 .1; .4 .4 .2];  % Deep
+% depositionalRates = [1, 1, 1];
 
-nRealizations=5;
-figure('Color', 'White')
+markovMatrices{1}    = [.1 .4 .5 0; .1 .5 .4 0; 0 .3 .6 .1; 0 0 .9 .1];  % Shallow
+markovMatrices{2}    = [.8 .2 .0 0; .6 .3 .1 0; .5 .2 .3 0; 0 0 .9 .1];  % Deep
+depositionalRates{1} = [1, 1, 1, -.1];
 
-for i = 1:nRealizations
-    
 % Simulate
-strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
-strata = upscaleStrataMean(strata, 11)
+nScales = 6
+figure('Color', 'White', 'Units','inches', 'Position',[3 3 10 4],'PaperPositionMode','auto');
+for i = 1:nScales
 
-% Plotting 
-subplot(3,nRealizations,[i, i+nRealizations])
-plotStrata(finalizeStrata(strata), true, size(markovMatrices{1}, 1));
-title(['Realization ', num2str(i)])
-    
-hold on
+    strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
+    subplot(1,nScales+1,i+1)
+    plotStrata(strata, true, true, size(markovMatrices{1},1));
+    title(['Realization: ', num2str(i)])
+    set(gca,'YTicklabel', [])
+    ylabel('')
+
 end
 
-subplot(3,nRealizations,2*nRealizations+1:3*nRealizations)
-plot(seaLevelAge,seaLevelHeight, 'LineWidth',2)
-set(gca, 'xDir', 'reverse')
-ylabel('Normalized relative sea-level'); xlabel('Age')
+subplot(1,nScales+1,1)
+plot(seaLevelHeight, seaLevelAge, 'LineWidth',2)
+set(gca, 'yDir', 'reverse')
+% xlabel(['Normalized relative', char(10), 'sea level'], 'Interpreter', 'latex'); ylabel('Depth')
+xlabel(['Sea level'], 'Interpreter', 'latex'); ylabel('Depth')
 axis tight
+set(gca, 'FontUnits','points', 'FontWeight','normal', 'FontSize',12, 'FontName','Times')
+
 
 %% Upscaling example (Mode)
 
+rng(842)
 % Parameters
 maxAge= 200;
 age = (0:maxAge)';
@@ -64,6 +68,8 @@ for i = 1:nScales
     subplot(1,nScales+1,i+1)
     plotStrata(strata, true, true, size(markovMatrices{1},1));
     title(['Scale: ', num2str(smoothingInterval)])
+    set(gca,'YTicklabel', [])
+    ylabel('')
 
 end
 
@@ -82,7 +88,7 @@ seaLevelAge = 0:.01:maxAge;
 seaLevelHeight = sin(seaLevelAge/20) +  .25*sin(seaLevelAge/5);
 markovMatrices{1} = [.1 .4 .5; .1 .5 .4; 0 .3 .7];   % Shallow
 markovMatrices{2} = [.7 .2 .1; .4 .5 .1; .4 .4 .2];  % Deep
-depositionalRates = [1, 1, -1];
+depositionalRates = [1, 1, 1];
 
 % Simulate
 strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
@@ -100,7 +106,8 @@ for i = 1:nScales
     subplot(1,nScales+1,i+1)
     plotStrata(strataUpscaled, true, true, size(markovMatrices{1},1));
     title(['Scale: ', num2str(smoothingInterval)])
-
+    set(gca,'YTicklabel', [])
+    ylabel('')
 end
 
 subplot(1,nScales+1,1)
@@ -108,3 +115,4 @@ plot(seaLevelHeight, seaLevelAge, 'LineWidth',2)
 set(gca, 'yDir', 'reverse')
 xlabel('Normalized relative sea-level'); ylabel('Depth')
 axis tight
+

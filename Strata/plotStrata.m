@@ -84,9 +84,8 @@ if isPlotErosion == true
               if isLithologyComp; value = nClasses; end
               endXPosition = baseDepth(1)/5*(value)^.5;
                   
-
               x =  0:.01:endXPosition;
-              y =  startYPosition + sin(x*10)*baseDepth(end)/10;
+              y =  startYPosition + sin(x*10)*baseDepth(end)/8;
               plot(x,y,'r', 'LineWidth',2)
     end      
 end
@@ -99,5 +98,7 @@ set(gca,'XTickLabel', []);
 set(gca,'yDir', 'reverse')
 ylabel('Depth');
 xlabel('Lithology');
+set(gca, 'FontUnits','points', 'FontWeight','normal', 'FontSize',12, 'FontName','Times')
+
 
 end

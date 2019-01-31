@@ -28,7 +28,7 @@ if isRemoveErosionLayers==true
     strata = removeErodedStrata(strata);
 end
 
-% Merge erosional layers
+% Merge layers
 if isMerge == true
    strata = mergeStrata(strata);
 end

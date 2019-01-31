@@ -24,12 +24,13 @@ if ~exist('depositionalRates', 'var'); depositionalRates = ones(nLithologies,1);
 if ~exist('matricesPosition', 'var'); matricesPosition = (0:(nMatrices-1))/(nMatrices-1); end
 
 % Assertions
-assert(isvector(seaLevelHeight) && isvector(seaLevelAge) && isvector(depositionalRates), 'seaLevelAge, seaLevelHeight, and depositionalRates must be vectors')
+assert(isvector(seaLevelHeight) && isvector(seaLevelAge), 'seaLevelAge, seaLevelHeight, must be vectors')
 
 %% Main
 
+% Deposition rates
+
 % Make sure things are columns
-depositionalRates = depositionalRates(:);
 seaLevelHeight = seaLevelHeight(:);
 seaLevelAge = seaLevelAge(:);
 age = age(:);
@@ -53,17 +54,15 @@ midDepositionTime   = (startTime +  endTime)/2;
 midSeaLevel         = interp1(age, seaLevel,midDepositionTime);
 normalizedSeaLevel  = (midSeaLevel - min(seaLevel))/( max(seaLevel)- min(seaLevel));
 
-
 % Simulate deposition
 lithology = zeros(nTimeIntervals,1);
+thickness = zeros(nTimeIntervals,1);
 for i = 1:nTimeIntervals
     currentTransitionMatrix = interpMarkovMatrix(markovMatrices, normalizedSeaLevel(i), matricesPosition);
-    [lithology(i), binaryLithology] = sampleMarkovChain(binaryLithology, currentTransitionMatrix);        
+    currentDepositionRate   = interpDepositionalRates(depositionalRates,  normalizedSeaLevel(i), matricesPosition);
+    [lithology(i), binaryLithology] = sampleMarkovChain(binaryLithology, currentTransitionMatrix);
+    thickness(i) = currentDepositionRate(lithology(i)) * intervalTime(i);
 end
-
-% Calculate thicknesses and depth
-thickness  = depositionalRates(lithology) .* intervalTime;
-
 
 % Organize output
 strata = table(startTime, endTime, thickness, lithology, midSeaLevel);
