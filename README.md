@@ -12,7 +12,7 @@ See the example Matlab script folder for possible usage. Basically 1) define the
 - Study the effect of upscaling on different outputs.
 - Create a training dataset for machine learning.
 
-## Other features
+## Upscaling
 Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See examples for how to use.
 
 <div align="center">
