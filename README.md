@@ -20,5 +20,9 @@ See the example Matlab script folder for possible usage. Basically
 ## Other features
 Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See examples for how to use.
 
+<div align="center">
+    <img width=800 src="https://github.com/MosGeo/Strata/blob/master/ReadmeFiles/ModeUpscaling.png" alt="Mode" title="Mode upscaling"</img>
+</div>
+
 ## Referencing
 For now, you can reference this Github repository if you use the code.
