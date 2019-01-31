@@ -79,6 +79,7 @@ xlabel('Sea-level'); ylabel('Depth')
 axis tight
 
 %% Upscaling example (Mean)
+rng(842)
 
 % Parameters
 maxAge= 200;
@@ -95,7 +96,7 @@ smoothingIntervals = [1 3 5 7 9 11 13 17 25];
 
 nScales = numel(smoothingIntervals);
 
-figure('Color', 'White')
+figure('Color', 'White', 'Units','inches', 'Position',[3 3 10 4],'PaperPositionMode','auto');
 
 for i = 1:nScales
 
@@ -112,6 +113,6 @@ end
 subplot(1,nScales+1,1)
 plot(seaLevelHeight, seaLevelAge, 'LineWidth',2)
 set(gca, 'yDir', 'reverse')
-xlabel('Normalized relative sea-level'); ylabel('Depth')
+xlabel('Sea-level'); ylabel('Depth')
 axis tight
 
