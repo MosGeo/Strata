@@ -1,6 +1,6 @@
 # Strata - A Markov chain based stratigraphic simulator within a sequence stratigraphic framework
 
-Cyclostratigraphy in the rock is prevelant. We often rely on it to make predictions. The puropse of this code is to simulate a 1D stratigrahic section that closely resembles what is observed in reality. I've decided to do this by incorporating a sequence stratigraphic framework into the model. This means that the simulation incorporates external forcing such as chaning in the sea level and the amount sediment sourcing.
+Cyclostratigraphy in the rock is prevelant. We often rely on it to make predictions. The puropse of this code is to simulate a 1D stratigrahic section that closely resembles what is observed in reality. I've decided to do this by incorporating a sequence stratigraphic framework into the model. This means that the simulation incorporates external forcing such as chaning in the sea level and the amount sediment sourcing. In addition erosion can also be incorporated as a Markov state with negative depostion.
 
 ## Possible usage
 - Study the effect of changing cyclostratigraphic pattern on different outputs such as the seismic signal.
