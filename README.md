@@ -7,7 +7,7 @@ Cyclostratigraphy in the rock is prevelant. We often rely on it to make predicti
 </div>
 
 ## How to use
-See the example Matlab script folder for possible usage. Basically 1) define the transition matrices and depositional rates at different sea levels, 2) fefine sea level curve, 3) Run. Possible usage into projects include:
+See the example Matlab script folder for possible usage. Basically 1) define the transition matrices and depositional rates at different sea levels, 2) define sea level curve, 3) Run. Possible usage into projects include:
 - Study the effect of changing cyclostratigraphic pattern on different outputs such as the seismic signal.
 - Study the effect of upscaling on different outputs.
 - Create a training dataset for machine learning.
