@@ -25,4 +25,4 @@ Upscaling functions are included. Mean and Mode moving window upscaling are impl
 </div>
 
 ## Referencing
-For now, you can reference this Github repository if you use the code.
+Al Ibrahim, M. A., Strata: A Markov chain based stratigraphic simulator within a sequence stratigraphic framework: Website, https://github.com/MosGeo/Strata/.
