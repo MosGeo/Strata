@@ -12,7 +12,7 @@ See the example Matlab script folder for possible usage. Basically 1) define the
 - Study the effect of upscaling on different outputs.
 - Create a training dataset for machine learning.
 
-'''
+```
 % Parameters
 maxAge= 200;
 age = (0:maxAge)';
@@ -22,10 +22,10 @@ markovMatrices{1} = [.1 .4 .5; .1 .5 .4; 0 .3 .7];   % Shallow
 markovMatrices{2} = [.7 .2 .1; .4 .5 .1; .4 .4 .2];  % Deep
 depositionalRates = [1, 1, 1];
 
-% Simulate true stratigraphy
+% Simulate and plot stratigraphy
 strataOrig = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
 plotStrata(strataOrig, true, true, size(markovMatrices{1},1));
-'''
+```
 
 ## Upscaling
 Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See examples for how to use.
