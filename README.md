@@ -16,9 +16,8 @@ An example of usage is below. Note that most of the code is setting up the input
 
 ```
 % Parameters
-maxAge= 200;
-age = (0:maxAge)';
-seaLevelAge = 0:.01:maxAge;
+age = (0:200)';
+seaLevelAge = 0:.01:200;
 seaLevelHeight = sin(seaLevelAge/20) +  .25*sin(seaLevelAge/5);
 markovMatrices{1} = [.1 .4 .5; .1 .5 .4; 0 .3 .7];   % Shallow
 markovMatrices{2} = [.7 .2 .1; .4 .5 .1; .4 .4 .2];  % Deep
