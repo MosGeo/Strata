@@ -29,7 +29,7 @@ plotStrata(strataOrig, true, true, size(markovMatrices{1},1));
 ```
 
 ## Upscaling
-Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See examples for how to use.
+Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See the example file on how to use this function.
 
 <div align="center">
     <img width=800 src="https://github.com/MosGeo/Strata/blob/master/ReadmeFiles/MeanModeUpscaling.png" alt="MeanMode" title="Upscaling"</img>
