@@ -95,7 +95,6 @@ strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, deposi
 smoothingIntervals = [1 3 5 7 9 11 13 17 25];
 
 nScales = numel(smoothingIntervals);
-
 figure('Color', 'White', 'Units','inches', 'Position',[3 3 10 4],'PaperPositionMode','auto');
 
 for i = 1:nScales

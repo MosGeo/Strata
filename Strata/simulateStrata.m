@@ -1,4 +1,4 @@
-function [strata, midSeaLevel] = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates, matricesPosition)
+function [strata] = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates, matricesPosition)
 %% simulateStrata   Simulate interval using Markov chains with sequence stratigraphic framework
 %
 % Mustafa Al Ibrahim @ 2018
