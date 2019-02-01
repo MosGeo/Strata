@@ -24,8 +24,8 @@ markovMatrices{2} = [.7 .2 .1; .4 .5 .1; .4 .4 .2];  % Deep
 depositionalRates = [1, 1, 1];
 
 % Simulate and plot stratigraphy
-strataOrig = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
-plotStrata(strataOrig, true, true, size(markovMatrices{1},1));
+strata = simulateStrata(markovMatrices, age, seaLevelAge, seaLevelHeight, depositionalRates);
+plotStrata(strata);
 ```
 
 ## Upscaling
