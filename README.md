@@ -12,6 +12,8 @@ See the example Matlab script folder for possible usage. Basically 1) define the
 - Study the effect of upscaling on different outputs.
 - Create a training dataset for machine learning.
 
+An example of usage is below. Note that most of the code is setting up the input parameters.
+
 ```
 % Parameters
 maxAge= 200;
