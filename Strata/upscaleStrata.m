@@ -1,4 +1,4 @@
-function strata = upscaleStrataMode(strata, smoothingInterval, type)
+function strata = upscaleStrataMode(strata, smoothingInterval, type, isAutoUniform)
 %% UPSCALESTRATA  Upscale classificaiton
 %
 % strata:           Strataigraphic table (includes lithology, thickness)
@@ -11,6 +11,7 @@ function strata = upscaleStrataMode(strata, smoothingInterval, type)
 % Defaults
 if ~exist('smoothingInterval', 'var'); smoothingInterval = 1; end
 if ~exist('type', 'var'); type = 'Mode'; end
+if ~exist('isAutoUniform', 'var'); isAutoUniform = false; end
 
 % Assertions
 assert(exist('strata', 'var')==true, 'strata must be provided');
@@ -20,9 +21,9 @@ assert(ischar(type) && ismember(lower(type), {'mode', 'mean'}), 'type must be mo
 
 switch(lower(type))
     case 'mode'
-         strata = upscaleStrataMode(strata, smoothingInterval);     
+         strata = upscaleStrataMode(strata, smoothingInterval, isAutoUniform);     
     case 'mean'
-         strata = upscaleStrataMean(strata, smoothingInterval);     
+         strata = upscaleStrataMean(strata, smoothingInterval, isAutoUniform);     
 end
 
 end

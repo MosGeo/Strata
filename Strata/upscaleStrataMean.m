@@ -1,4 +1,4 @@
-function [strata] = upscaleStrataMean(strata, smoothingInterval)
+function [strata] = upscaleStrataMean(strata, smoothingInterval, isAutoUniform)
 %% UPSCALESTRATA  Upscale classificaiton
 %
 % strata:           Strataigraphic table (includes lithology, thickness)
@@ -10,11 +10,17 @@ function [strata] = upscaleStrataMean(strata, smoothingInterval)
 
 % Defaults
 if ~exist('smoothingInterval', 'var'); smoothingInterval = 1; end
+if ~exist('isAutoUniform', 'var'); isAutoUniform = false; end
 
 % Assertions
 assert(exist('strata', 'var')==true, 'strata must be provided');
+assert(numel(unique(strata.thickness))==1 || isAutoUniform, 'strata thickness is variable, make uniform or enable isAutoUniform');
 
 %% Main
+
+if ~(numel(unique(strata.thickness))==1) && isAutoUniform
+   strata = uniformThicknessStrata(strata); 
+end
 
 classification = strata.lithology;
 nClasses  = max(classification);

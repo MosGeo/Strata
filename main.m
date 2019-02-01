@@ -17,6 +17,7 @@ seaLevelHeight = sin(seaLevelAge/20) ;%+  .25*sin(seaLevelAge/5);
 markovMatrices{1}    = [.1 .4 .5 0; .1 .5 .4 0; 0 .3 .6 .1; 0 0 .9 .1];  % Shallow
 markovMatrices{2}    = [.8 .2 .0 0; .6 .3 .1 0; .5 .2 .3 0; 0 0 .9 .1];  % Deep
 depositionalRates{1} = [1, 1, 1, -.1];
+depositionalRates{2} = [3, 4, 2, -.1];
 
 % Simulate
 nScales = 6
