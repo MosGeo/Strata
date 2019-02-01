@@ -29,7 +29,13 @@ plotStrata(strata);
 ```
 
 ## Upscaling
-Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See the example file on how to use this function.
+Upscaling functions are included. Mean and Mode moving window upscaling are implemented. See the example file on how for further details. General usage:
+
+```
+smoothingInterval = 3;
+strata = upscaleStrata(strata, smoothingInterval, 'mode');
+strata = upscaleStrata(strata, smoothingInterval, 'mean');
+```
 
 <div align="center">
     <img width=800 src="https://github.com/MosGeo/Strata/blob/master/ReadmeFiles/MeanModeUpscaling.png" alt="MeanMode" title="Upscaling"</img>
