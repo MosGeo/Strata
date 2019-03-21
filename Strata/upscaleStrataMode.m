@@ -23,6 +23,7 @@ if ~(numel(unique(strata.thickness))==1) && isAutoUniform
 end
 
 classification = strata.lithology;
+
 padSize = (smoothingInterval - 1) / 2;   
 
 B = padarray(classification,padSize,'replicate');

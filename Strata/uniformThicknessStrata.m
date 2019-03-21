@@ -12,6 +12,9 @@ assert(exist('strata', 'var')==true, 'strata must be provided');
 % Defaults
 if ~exist('layerThickness', 'var'); layerThickness= min(strata.thickness); end
 
+% Assertions
+assert(layerThickness <= min(strata.thickness), 'layerThickness <= minimum strata thickness');
+
 % Parameters
 isLithologyComp = ~isvector(strata.lithology);
 

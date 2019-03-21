@@ -1,4 +1,4 @@
-function strata = upscaleStrata(strata, scale, effectiveLithoType, isAutoUniform)
+function strata = upscaleStrataUniform(strata, scale, effectiveLithoType, isAutoUniform)
 %% UPSCALESTRATA  Upscale classificaiton
 %
 % strata:           Strataigraphic table (includes lithology, thickness)
@@ -23,9 +23,9 @@ assert(ischar(effectiveLithoType) && ismember(lower(effectiveLithoType), {'mode'
 smoothingInterval = 2*scale +1;
 switch(lower(effectiveLithoType))
     case 'mode'
-         strata = upscaleStrataMode(strata, smoothingInterval, isAutoUniform);     
+         strata = upscaleStrataUniformMode(strata, smoothingInterval, isAutoUniform);     
     case 'mean'
-         strata = upscaleStrataMean(strata, smoothingInterval, isAutoUniform);     
+         strata = upscaleStrataUniformMean(strata, smoothingInterval, isAutoUniform);     
 end
 
 end

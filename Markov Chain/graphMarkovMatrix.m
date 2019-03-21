@@ -37,17 +37,14 @@ p1.YDisplayLabels=stateNames;
 p1.XLabel = 'To';
 p1.YLabel = 'From';
 p1.ColorbarVisible = 'off';
-%p1.Colormap = gray;
 p1.Position
-set(gca,'FontSize',12,... 
-    'FontName','Times')
+set(gca,'FontSize',12,'FontName','Times')
 
 subplot(1,2,2)
 p2 = plot(G,'EdgeLabel',G.Edges.Weight,'LineWidth',2);
 p2.Marker = 's';
 p2.MarkerSize = p2.MarkerSize*2;
 p2.NodeColor = [0 0 0];
-%p2.EdgeColor = [.3 .3 .3];
 p2.NodeLabel = stateNames;
 p2.ArrowSize = p2.ArrowSize*2;
 set(gca,'Visible','off')

@@ -1,4 +1,4 @@
-function strata = upscaleStrata(strata, scale, effectiveLithoType, isAutoUniform)
+function strata = upscaleStrataRandom(strata, nIntervals, effectiveLithoType, isAutoUniform)
 %% UPSCALESTRATA  Upscale classificaiton
 %
 % strata:           Strataigraphic table (includes lithology, thickness)
@@ -9,7 +9,7 @@ function strata = upscaleStrata(strata, scale, effectiveLithoType, isAutoUniform
 %% Preprocessing
 
 % Defaults
-if ~exist('scale', 'var'); scale = 1; end
+if ~exist('nIntervals', 'var'); nIntervals = 1; end
 if ~exist('effectiveLithoType', 'var'); effectiveLithoType = 'Mode'; end
 if ~exist('isAutoUniform', 'var'); isAutoUniform = false; end
 
@@ -20,12 +20,11 @@ assert(ischar(effectiveLithoType) && ismember(lower(effectiveLithoType), {'mode'
 %% Main
 
 % Simple moving mean/mode upscaling
-smoothingInterval = 2*scale +1;
 switch(lower(effectiveLithoType))
     case 'mode'
-         strata = upscaleStrataMode(strata, smoothingInterval, isAutoUniform);     
+         strata = upscaleStrataRandomMode(strata, nIntervals, isAutoUniform);     
     case 'mean'
-         strata = upscaleStrataMean(strata, smoothingInterval, isAutoUniform);     
+         strata = upscaleStrataRandomMean(strata, nIntervals, isAutoUniform);     
 end
 
 end
